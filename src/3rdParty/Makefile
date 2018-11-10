@@ -1,4 +1,4 @@
 default: 
-	+$(MAKE) -C boost
+	@+$(MAKE) -C boost
 clean:
-	+$(MAKE) clean -C boost
+	@+$(MAKE) clean -C boost

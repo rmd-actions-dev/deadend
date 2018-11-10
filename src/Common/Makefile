@@ -1,4 +1,4 @@
 default : 
-	+$(MAKE) -C serverMain
+	@+$(MAKE) -C serverMain
 clean : 
-	+$(MAKE) clean -C serverMain
+	@+$(MAKE) clean -C serverMain
