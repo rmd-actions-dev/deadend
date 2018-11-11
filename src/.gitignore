@@ -1,0 +1,5 @@
+*.o
+*.today
+*.log
+serverMain
+3rdParty/boost/boost_1_61_0

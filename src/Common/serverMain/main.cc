@@ -1,9 +1,10 @@
 #include "ServerMain.hh"
-#include <boost/filesystem/fstream.hpp>
 
 int main()
 {
-  boost::filesystem::path p("log.today");
-  ServerMain app(p); 
+  ServerMain* app = new ServerMain();
+  app->doStuff();
+  delete(app);
+  return 0;
 }
 

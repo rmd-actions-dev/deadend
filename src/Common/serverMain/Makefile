@@ -2,8 +2,8 @@
 SOURCES := $(wildcard *.cc)
 OBJECTS := $(patsubst %.cc,%.o,$(SOURCES))
 SRC = ${DEADEND_SRC}
-CXX := g++ -std=c++11 -Wall -g -I $(SRC)/3rdParty/boost/boost_1_61_0 \
-   $(SRC)/libs/libboost_system.so 
+CXX := g++ -std=c++11 -Wall -g -lboost_system -I $(SRC)/3rdParty/boost/boost_1_61_0 -L $(SRC)/3rdParty/boost/boost_1_61_0/stage/lib
+ 
 
 .cc.o:
 	@${CXX} -c $<

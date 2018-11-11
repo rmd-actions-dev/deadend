@@ -1,21 +1,18 @@
 #pragma once
 
+#include <fstream>
 #include <ostream>
-#include <boost/filesystem/fstream.hpp>
 
-class ServerMain
- {
+class ServerMain {
 public:
-  ServerMain(
-          boost::filesystem::path path
-            );
+  ServerMain();
   virtual ~ServerMain();
-
+  void doStuff();
 private:
   // Logging output operator
   friend std::ostream &operator<<(std::ostream &out, const ServerMain &) {
     return out << "ServerMain";
   }
 
-  boost::filesystem::ofstream m_logFile;
+  std::ofstream m_logFile;
 };
