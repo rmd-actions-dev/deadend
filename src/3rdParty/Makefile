@@ -1,4 +1,1 @@
-default: 
-	@+$(MAKE) -C boost
-clean:
-	@+$(MAKE) clean -C boost
+include ${DEADEND_SRC}/default_dir.mk

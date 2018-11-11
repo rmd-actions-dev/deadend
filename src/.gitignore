@@ -1,5 +1,6 @@
 *.o
 *.today
 *.log
-serverMain
+/Common/serverMain/serverMain
+/Common/testing/testing
 3rdParty/boost/boost_1_61_0

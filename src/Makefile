@@ -1,4 +1,4 @@
-default :
+all :
 	@+$(MAKE) -C 3rdParty
 	@+$(MAKE) -C Common
 clean : 

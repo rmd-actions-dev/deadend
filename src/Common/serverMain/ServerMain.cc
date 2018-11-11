@@ -1,9 +1,11 @@
 #include "ServerMain.hh"
 
-#include <boost/asio/io_service.hpp>
-#include <boost/asio/steady_timer.hpp>
 
 #include <iostream>
+
+#include <boost/asio.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 
 ServerMain::ServerMain() {
   m_logFile.open("log.today");
@@ -17,5 +19,10 @@ ServerMain::~ServerMain() {
 }
 
 void ServerMain::doStuff() {
-  std::cout << "HOLA" << std::endl;
+  boost::asio::io_service io;
+  boost::asio::deadline_timer t(io, boost::posix_time::seconds(5));
+  t.wait();
+
+  std::cout << "Hello, world!" << std::endl;
+
 }

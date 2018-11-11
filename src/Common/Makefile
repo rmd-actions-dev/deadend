@@ -1,4 +1,1 @@
-default : 
-	@+$(MAKE) -C serverMain
-clean : 
-	@+$(MAKE) clean -C serverMain
+include ${DEADEND_SRC}/default_dir.mk
