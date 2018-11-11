@@ -8,18 +8,35 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <ctime>
 #include <iostream>
+#include <string>
 #include <boost/asio.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 
+std::string getDaytimeString() {
+  std::time_t now = std::time(0);
+  return std::ctime(&now);
+
+}
 int main()
 {
-  boost::asio::io_service io;
+  try {
+    boost::asio::io_service io_service;
+    boost::asio::ip::tcp::acceptor acceptor(io_service, 
+                                           boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 8008));
+    for (;;) {  
+      boost::asio::ip::tcp::socket socket(io_service);
+      acceptor.accept(socket);
 
-  boost::asio::deadline_timer t(io, boost::posix_time::seconds(5));
-  t.wait();
+      std::string message = getDaytimeString();
 
-  std::cout << "Hello, world!" << std::endl;
-
+      boost::system::error_code ignored_error;
+      boost::asio::write(socket, boost::asio::buffer(message), ignored_error);
+    }
+  }
+  catch (std::exception& e) {
+    std::cerr << e.what() << std::endl;
+  }
+  
   return 0;
 }
