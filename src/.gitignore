@@ -1,6 +1,10 @@
-*.o
-*.today
-*.log
-/Common/serverMain/serverMain
-/Common/testing/testing
-3rdParty/boost/boost_1_61_0
+# Ignore all
+*
+# Capture .cc and .hh files
+!*.cc
+!*.hh
+# Capture Makefiles
+!Makefile
+# Capture boost files
+!*.jam
+!boost_1_61_0.tar.bz2
