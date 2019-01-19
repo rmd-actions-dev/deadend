@@ -1,10 +1,9 @@
 #include "ConnectionManager.hh"
 
-#include <ostream>
-#include <fstream>
+#include <algorithm>
+#include <boost/bind.hpp>
 
-ConnectionManager::ConnectionManager(boost::asio::io_service &io) :
-  m_io(io) {
+ConnectionManager::ConnectionManager() {
   std::cout << *this << ": Created." << std::endl;
 }
 
@@ -13,20 +12,25 @@ ConnectionManager::~ConnectionManager() {
 }
  
 void ConnectionManager::openConnection(TcpConnection::ConnectionPtr connection) {
-	// Start the connection
-  connection->start();
   // Manage it
-  m_connections.push_back(connection);
+  m_connections.insert(connection);
+  // Start the connection
+  connection->start();
 }
+
 void ConnectionManager::closeConnection(TcpConnection::ConnectionPtr connection) {
-  // Find our connection
-  std::vector<TcpConnection::ConnectionPtr>::iterator it = m_connections.begin();
-  // Find the connection to remove
-  for (; it != m_connections.end(); it++) {
-    if (*it == connection) {
-      m_connections.erase(it);
-      break;
-    }
-  }
+  // Remove it
+  m_connections.erase(connection);
+  // Stop the connection
+  connection->stop();
+}
+
+void ConnectionManager::stopAllConnections() {
+  std::for_each(
+      m_connections.begin(),
+      m_connections.end(),
+      boost::bind(&TcpConnection::stop, _1));
+
+  m_connections.clear();
 
 }

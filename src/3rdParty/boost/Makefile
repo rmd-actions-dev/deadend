@@ -1,7 +1,7 @@
 # Current DIR
 CURDIR = $(shell pwd)
 # BOOST config
-BOOST_BOOTSTRAP_FLAGS = --prefix=${DEADEND_SRC} --includedir=${DEADEND_TOP}/include/3rdParty --with-libraries="atomic,date_time,exception,filesystem,iostreams,program_options,random,regex,serialization,system,thread" 
+BOOST_BOOTSTRAP_FLAGS = --prefix=${DEADEND_SRC} --includedir=${DEADEND_TOP}/include/3rdParty --with-libraries="atomic,date_time,exception,filesystem,iostreams,program_options,random,regex,serialization,signals,system,thread" 
 BOOST_BUILD_USER_CONFIG = $(CURDIR)/config.jam
 export BOOST_BUILD_USER_CONFIG
 

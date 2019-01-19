@@ -7,11 +7,17 @@
 #include <boost/shared_ptr.hpp>
 
 #include "TcpConnection.hh"
+#include "ConnectionManager.hh"
 
 class TcpServer {
 public:
-  TcpServer(boost::asio::io_service &io, uint16_t port);
+  TcpServer(
+      std::string address,
+      std::string port);
   virtual ~TcpServer();
+
+  void run();
+
 private:
 
   // Logging output operator
@@ -20,10 +26,14 @@ private:
   }
 
   void prv_startAccept();
-  void prv_handleAccept(TcpConnection::ConnectionPtr newConnection,
-                        const boost::system::error_code& error);
+  void prv_handleAccept(const boost::system::error_code& error);
+  void prv_handleStop();
 
   // Member variables
+  boost::asio::io_service m_ioService;
+  boost::asio::signal_set m_signals;
   boost::asio::ip::tcp::acceptor m_acceptor;
+  ConnectionManager m_connectionManager;
+  TcpConnection::ConnectionPtr m_newConnection;
   std::ofstream m_logFile;
 };

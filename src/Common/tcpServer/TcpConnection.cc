@@ -1,39 +1,55 @@
 #include "TcpConnection.hh"
+
 #include <ctime>
 #include <iostream>
 #include <string>
 #include <boost/bind.hpp>
 
-// Get the socket
-boost::shared_ptr<boost::asio::ip::tcp::socket> TcpConnection::getSocket() {
-  return m_socket;
+#include "ConnectionManager.hh"
+
+TcpConnection::TcpConnection(
+    boost::asio::io_service &io,
+    ConnectionManager &manager) :
+    m_connectionManager(manager),
+    m_socket(io) {
+  std::cout << *this << ": Created." << std::endl;
 }
 
-TcpConnection::TcpConnection(boost::asio::io_service &io) {
-  std::cout << "Creating a new TCP connection object." << std::endl;
-  m_socket.reset(new boost::asio::ip::tcp::socket(io));
+// Get the socket
+boost::asio::ip::tcp::socket& TcpConnection::getSocket() {
+  return m_socket;
 }
 
 // Start the TCP connection
 void TcpConnection::start() {
+  std::cout << *this << ": Opening connection." << std::endl;
 
   // Read from the socket
- m_socket->async_read_some(boost::asio::buffer(m_data, maxSize),
+  m_socket.async_read_some(boost::asio::buffer(m_buffer),
                            boost::bind(
-                           &TcpConnection::prv_handleRead, 
-                           shared_from_this(),
-                           boost::asio::placeholders::error,
-                           boost::asio::placeholders::bytes_transferred));
+                             &TcpConnection::prv_handleRead,
+                             shared_from_this(),
+                             boost::asio::placeholders::error,
+                             boost::asio::placeholders::bytes_transferred));
+}
+
+void TcpConnection::stop() {
+  std::cout << *this << ": Closing connection." << std::endl;
+
+  // Close the socket
+  m_socket.close();
 }
 
   
 void TcpConnection::prv_handleRead(const boost::system::error_code& error, size_t bytes) {
-  std::cout << "Read " << bytes << " bytes." << std::endl;
+  std::cout << *this << ": Read " << bytes << " bytes." << std::endl;
   if (!error) {
-    boost::asio::async_write(			
-      *m_socket, 
-      boost::asio::buffer(m_data, bytes),
-      boost::bind(&TcpConnection::prv_handleWrite, 
+    std::cout << *this << ":" << std::endl << m_buffer.data() << std::endl;
+
+    boost::asio::async_write(
+      m_socket,
+      boost::asio::buffer(m_buffer, bytes),
+      boost::bind(&TcpConnection::prv_handleWrite,
                   shared_from_this(),
                   boost::asio::placeholders::error,
                   boost::asio::placeholders::bytes_transferred));
@@ -44,18 +60,26 @@ void TcpConnection::prv_handleRead(const boost::system::error_code& error, size_
 }
 
 void TcpConnection::prv_handleWrite(const boost::system::error_code& error, size_t bytes) {
-  std::cout << "Writing " << bytes << " bytes." << std::endl;
+  std::cout << *this << ": Writing " << bytes << " bytes." << std::endl;
   if (!error) {
-    m_socket->async_read_some(boost::asio::buffer(m_data, bytes),
-                              boost::bind(
-                              &TcpConnection::prv_handleRead, 
-                              shared_from_this(),
-                              boost::asio::placeholders::error,
-                              boost::asio::placeholders::bytes_transferred));
+//    m_socket.async_read_some(boost::asio::buffer(m_buffer, bytes),
+//                             boost::bind(
+//                              &TcpConnection::prv_handleRead,
+//                              shared_from_this(),
+//                              boost::asio::placeholders::error,
+//                              boost::asio::placeholders::bytes_transferred));
+
+    boost::system::error_code unusedEC;
+    // Close the connection
+    m_socket.shutdown(
+        boost::asio::ip::tcp::socket::shutdown_both,
+        unusedEC);
   } 
   else {
-    std::cout << "Encountered an error(" << error.value() << ':' << error.message() << ')' << std::endl;
+    std::cout << *this << ": Encountered an error(" << error.value() << ':' << error.message() << ')' << std::endl;
+    m_connectionManager.closeConnection(shared_from_this());
   }
 }
+
 
 

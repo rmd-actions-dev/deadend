@@ -1,13 +1,11 @@
 #include "TcpServer.hh"
-#include <boost/asio.hpp>
 #include <iostream>
 
 int main()
 {
   try {
-    boost::asio::io_service io;
-    TcpServer server(io, 8008);
-    io.run();
+    TcpServer server("localhost", "8008");
+    server.run();
   }
   catch (std::exception& e) {
    std::cout << e.what() << std::endl;
