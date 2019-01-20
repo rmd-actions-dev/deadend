@@ -1,11 +1,17 @@
-#include "TcpServer.hh"
 #include <iostream>
+
+#include "TcpServer.hh"
+
+class TcpConnection;
+class ConnectionManager;
 
 int main()
 {
+  boost::shared_ptr<TcpServer<TcpConnection, ConnectionManager>> server;
+
   try {
-    TcpServer server("localhost", "8008");
-    server.run();
+    server.reset(new TcpServer<TcpConnection, ConnectionManager>("localhost", "8008"));
+    server->run();
   }
   catch (std::exception& e) {
    std::cout << e.what() << std::endl;

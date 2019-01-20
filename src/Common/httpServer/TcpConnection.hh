@@ -48,6 +48,4 @@ private:
   boost::asio::ip::tcp::socket m_socket;
   boost::array<char, 65535> m_readBuffer;
   std::string m_writeBuffer;
-
-
 };

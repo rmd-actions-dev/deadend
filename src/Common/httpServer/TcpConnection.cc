@@ -6,6 +6,7 @@
 #include <boost/bind.hpp>
 
 #include "ConnectionManager.hh"
+#include "RequestHandler.hh"
 
 TcpConnection::TcpConnection(
     boost::asio::io_service &io,
@@ -14,10 +15,6 @@ TcpConnection::TcpConnection(
     m_socket(io) {
   std::cout << *this << ": Created." << std::endl;
 }
-
-//TcpConnection::~TcpConnection() {
-//  std::cout << *this << ": Destroyed." << std::endl;
-//}
 
 // Get the socket
 boost::asio::ip::tcp::socket& TcpConnection::getSocket() {
@@ -42,7 +39,9 @@ void TcpConnection::stop() {
   
 void TcpConnection::consumeData(std::string &buffer, size_t bytes) {
   std::cout << *this << ": Request content: " << std::endl << buffer << std::endl;
-  sendResponse(buffer);
+  RequestHandler handler(shared_from_this());
+  handler.handleRequest(buffer);
+  return;
 }
 
 void TcpConnection::sendResponse(std::string &buffer) {
@@ -78,11 +77,7 @@ void TcpConnection::prv_handleRead(const boost::system::error_code& error, size_
 void TcpConnection::prv_handleWrite(const boost::system::error_code& error, size_t bytes) {
   std::cout << *this << ": Writing " << bytes << " bytes." << std::endl;
   if (!error) {
-//    boost::system::error_code unusedEC;
-//    // Close the connection
-//    m_socket.shutdown(
-//        boost::asio::ip::tcp::socket::shutdown_both,
-//        unusedEC);
+
 
   } 
   else {

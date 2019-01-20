@@ -1,10 +1,13 @@
 # Ignore all
 *
+# Capture Directories
+!/Common
+!/3rdParty
 # Capture .cc and .hh files
-!*.cc
-!*.hh
+!/Common/*/*.cc
+!/Common/*/*.hh
 # Capture Makefiles
-!Makefile
+/Common/*/!Makefile
 # Capture boost files
 !*.jam
 !boost_1_61_0.tar.bz2
