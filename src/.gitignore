@@ -3,11 +3,13 @@
 # Capture Directories
 !/Common
 !/3rdParty
+!/lib
 # Capture .cc and .hh files
 !/Common/*/*.cc
 !/Common/*/*.hh
 # Capture Makefiles
 /Common/*/!Makefile
+!*.mk
 # Capture boost files
 !*.jam
 !boost_1_61_0.tar.bz2

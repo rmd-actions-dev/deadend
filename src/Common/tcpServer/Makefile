@@ -1,2 +1,2 @@
-include ${DEADEND_SRC}/default_bin.mk
+include ${DEADEND_SRC}/default_lib.mk
 
