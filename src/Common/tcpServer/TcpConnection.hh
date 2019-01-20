@@ -6,6 +6,9 @@
 #include <boost/array.hpp>
 #include <boost/noncopyable.hpp>
 
+namespace deadend {
+namespace tcpServer {
+
 class ConnectionManager;
 
 class TcpConnection:
@@ -18,36 +21,38 @@ public:
  
   TcpConnection(
       boost::asio::io_service &io,
-      ConnectionManager &manager);
+      deadend::tcpServer::ConnectionManager &manager);
+
   virtual ~TcpConnection() {}
 
-  boost::asio::ip::tcp::socket& getSocket();
+  virtual boost::asio::ip::tcp::socket& getSocket();
 
-  void start();
-  void stop();
+  virtual void start();
+  virtual void stop();
 
   // This should be overridden by any library than inherits from tcpServer
   virtual void consumeData(std::string &buffer, size_t bytes);
 
-  void sendResponse(std::string &buffer);
+  virtual void sendResponse(std::string &buffer);
 
 
-private:
+protected:
 
   // Logging output operator
   friend std::ostream &operator<<(std::ostream &out, const TcpConnection &) {
     return out << "TcpConnection";
   }
 
-  void prv_handleRead(const boost::system::error_code&, size_t);
-  void prv_handleWrite(const boost::system::error_code&, size_t);
-  void prv_readSome();
+  virtual void pro_handleRead(const boost::system::error_code&, size_t);
+  virtual void pro_handleWrite(const boost::system::error_code&, size_t);
+  virtual void pro_readSome();
 
   // Member Variables
-  ConnectionManager &m_connectionManager;
+  deadend::tcpServer::ConnectionManager &m_connectionManager;
   boost::asio::ip::tcp::socket m_socket;
   boost::array<char, 65535> m_readBuffer;
   std::string m_writeBuffer;
-
-
 };
+
+}
+}

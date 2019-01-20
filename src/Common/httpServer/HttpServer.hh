@@ -1,9 +1,11 @@
 #pragma once
 
+#include <tcpServer/TcpServer.hh>
 #include "TcpConnection.hh"
-#include "ConnectionManager.hh"
 
-#include "../tcpServer/TcpServer.hh"
+
+namespace deadend {
+namespace httpServer {
 
 class HttpServer {
 public:
@@ -11,7 +13,7 @@ public:
       std::string address,
       std::string port) {
     // Initialize the server
-    m_server.reset(new TcpServer<TcpConnection, ConnectionManager>(address, port));
+    m_server.reset(new deadend::tcpServer::TcpServer<deadend::httpServer::TcpConnection,deadend::tcpServer::ConnectionManager>(address, port));
   }
   virtual ~HttpServer() {}
 
@@ -28,5 +30,8 @@ private:
   }
 
   // Member variables
-  boost::shared_ptr<TcpServer<TcpConnection, ConnectionManager>> m_server;
+  boost::shared_ptr<deadend::tcpServer::TcpServer<deadend::httpServer::TcpConnection, deadend::tcpServer::ConnectionManager>> m_server;
 };
+
+}
+}

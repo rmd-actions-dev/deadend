@@ -6,6 +6,8 @@
 #include <boost/bind.hpp>
 
 #include "ConnectionManager.hh"
+namespace deadend {
+namespace tcpServer {
 
 TcpConnection::TcpConnection(
     boost::asio::io_service &io,
@@ -14,10 +16,6 @@ TcpConnection::TcpConnection(
     m_socket(io) {
   std::cout << *this << ": Created." << std::endl;
 }
-
-//TcpConnection::~TcpConnection() {
-//  std::cout << *this << ": Destroyed." << std::endl;
-//}
 
 // Get the socket
 boost::asio::ip::tcp::socket& TcpConnection::getSocket() {
@@ -29,7 +27,7 @@ void TcpConnection::start() {
   std::cout << *this << ": Opening connection." << std::endl;
 
   // Start reading
-  prv_readSome();
+  pro_readSome();
 }
 
 void TcpConnection::stop() {
@@ -51,13 +49,13 @@ void TcpConnection::sendResponse(std::string &buffer) {
   boost::asio::async_write(
     m_socket,
     boost::asio::buffer(buffer),
-    boost::bind(&TcpConnection::prv_handleWrite,
+    boost::bind(&TcpConnection::pro_handleWrite,
                 shared_from_this(),
                 boost::asio::placeholders::error,
                 boost::asio::placeholders::bytes_transferred));
 }
 
-void TcpConnection::prv_handleRead(const boost::system::error_code& error, size_t bytes) {
+void TcpConnection::pro_handleRead(const boost::system::error_code& error, size_t bytes) {
   std::cout << *this << ": Read " << bytes << " bytes." << std::endl;
   if (!error) {
     std::string buffer(m_readBuffer.begin(), m_readBuffer.begin() + bytes);
@@ -66,7 +64,7 @@ void TcpConnection::prv_handleRead(const boost::system::error_code& error, size_
     consumeData(buffer, bytes);
 
     // Read moar
-    prv_readSome();
+    pro_readSome();
     return;
   }
   else {
@@ -75,15 +73,9 @@ void TcpConnection::prv_handleRead(const boost::system::error_code& error, size_
   }
 }
 
-void TcpConnection::prv_handleWrite(const boost::system::error_code& error, size_t bytes) {
+void TcpConnection::pro_handleWrite(const boost::system::error_code& error, size_t bytes) {
   std::cout << *this << ": Writing " << bytes << " bytes." << std::endl;
   if (!error) {
-//    boost::system::error_code unusedEC;
-//    // Close the connection
-//    m_socket.shutdown(
-//        boost::asio::ip::tcp::socket::shutdown_both,
-//        unusedEC);
-
   } 
   else {
     std::cout << *this << ": Encountered an error(" << error.value() << ':' << error.message() << ')' << std::endl;
@@ -91,16 +83,19 @@ void TcpConnection::prv_handleWrite(const boost::system::error_code& error, size
   }
 }
 
-void TcpConnection::prv_readSome() {
+void TcpConnection::pro_readSome() {
   std::cout << *this << ": Reading some data." << std::endl;
 
   // Read from the socket
   m_socket.async_read_some(boost::asio::buffer(m_readBuffer),
                            boost::bind(
-                             &TcpConnection::prv_handleRead,
+                             &TcpConnection::pro_handleRead,
                              shared_from_this(),
                              boost::asio::placeholders::error,
                              boost::asio::placeholders::bytes_transferred));
+}
+
+}
 }
 
 

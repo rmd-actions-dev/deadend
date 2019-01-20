@@ -3,6 +3,10 @@
 #include <algorithm>
 #include <boost/bind.hpp>
 
+namespace deadend {
+namespace tcpServer {
+
+
 ConnectionManager::ConnectionManager() {
   std::cout << *this << ": Created." << std::endl;
 }
@@ -32,5 +36,7 @@ void ConnectionManager::stopAllConnections() {
       boost::bind(&TcpConnection::stop, _1));
 
   m_connections.clear();
+}
 
+}
 }

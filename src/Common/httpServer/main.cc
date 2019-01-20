@@ -4,7 +4,7 @@
 int main()
 {
   try {
-    HttpServer server("localhost", "12345");
+    deadend::httpServer::HttpServer server("localhost", "12345");
     server.run();
   }
   catch (std::exception& e) {

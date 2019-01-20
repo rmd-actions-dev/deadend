@@ -5,6 +5,9 @@
 
 #include "TcpConnection.hh"
 
+namespace deadend {
+namespace tcpServer {
+
 class ConnectionManager: 
   private boost::noncopyable
 {
@@ -16,7 +19,7 @@ public:
  void closeConnection(TcpConnection::TcpConnectionPtr);
  void stopAllConnections();
 
-private:
+protected:
 
   // Logging output operator
   friend std::ostream &operator<<(std::ostream &out, const ConnectionManager &) {
@@ -25,3 +28,6 @@ private:
 
  std::set<TcpConnection::TcpConnectionPtr> m_connections;
 };
+
+}
+}

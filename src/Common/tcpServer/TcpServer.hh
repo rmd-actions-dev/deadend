@@ -1,13 +1,19 @@
 #pragma once
 
 #include <fstream>
-#include <ostream>
+#include <iostream>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 #include <signal.h>
 
+#include "ConnectionManager.hh"
+
+namespace deadend {
+namespace tcpServer {
+
 template <class Connection, class Manager>
+
 class TcpServer {
 
 public:
@@ -108,3 +114,5 @@ private:
   ConnectionPtr m_newConnection;
   std::ofstream m_logFile;
 };
+}
+}

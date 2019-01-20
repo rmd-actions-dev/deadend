@@ -3,10 +3,13 @@
 #include <iostream>
 #include "TcpConnection.hh"
 
+namespace deadend {
+namespace httpServer {
+
 class RequestHandler {
 
 public:
-  RequestHandler(TcpConnection::TcpConnectionPtr ptr);
+  RequestHandler(deadend::httpServer::TcpConnection::TcpConnectionPtr ptr);
   ~RequestHandler();
 
   void handleRequest(std::string message);
@@ -18,5 +21,8 @@ private:
   }
 
   // Member variables
-  TcpConnection::TcpConnectionPtr m_connection;
+  deadend::httpServer::TcpConnection::TcpConnectionPtr m_connection;
 };
+
+}
+}
