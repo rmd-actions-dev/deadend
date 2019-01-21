@@ -11,7 +11,8 @@ include ${DEADEND_SRC}/default.mk
 .PHONY: all
 all : $(OBJECTS)
 	@$(CXX) -o $(DIR) $(OBJECTS) $(LIBS)
-	@ar rsv ${DEADEND_SRC}/lib/$(DIR).a $(OBJECTS) > /dev/null
+	@ar rsv $(DIR).a $(OBJECTS) > /dev/null
+	@cp $(DIR).a ${DEADEND_SRC}/lib/$(DIR).a
 
 .PHONY: clean
 clean :

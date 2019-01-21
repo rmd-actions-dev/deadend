@@ -17,7 +17,11 @@ TcpConnection::TcpConnection(
 }
 
 void TcpConnection::consumeData(std::string &buffer, size_t bytes) {
-  std::cout << *this << ": Request content: " << std::endl << buffer << std::endl;
+  std::cout << "=======================================" << std::endl
+            << "--> HTTP" << std::endl                                  
+            << "=======================================" << std::endl
+            << "Request content: " << std::endl 
+            << buffer << std::endl;
   deadend::httpServer::RequestHandler handler(boost::static_pointer_cast<TcpConnection>(shared_from_this()));
   handler.handleRequest(buffer);
   return;

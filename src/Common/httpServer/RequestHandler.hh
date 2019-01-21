@@ -9,7 +9,7 @@ namespace httpServer {
 class RequestHandler {
 
 public:
-  RequestHandler(deadend::httpServer::TcpConnection::TcpConnectionPtr ptr);
+  RequestHandler(TcpConnection::TcpConnectionPtr ptr);
   ~RequestHandler();
 
   void handleRequest(std::string message);
@@ -21,7 +21,7 @@ private:
   }
 
   // Member variables
-  deadend::httpServer::TcpConnection::TcpConnectionPtr m_connection;
+  TcpConnection::TcpConnectionPtr m_connection;
 };
 
 }
