@@ -1,5 +1,3 @@
-# Ignore all
-*
 # Capture Directories
 !/Common
 !/3rdParty
@@ -13,3 +11,5 @@
 # Capture boost files
 !*.jam
 !boost_1_61_0.tar.bz2
+# Ignore all
+*

@@ -19,7 +19,7 @@ private:
   friend std::ostream &operator<<(std::ostream &out, const RequestHandler &) {
     return out << "RequestHandler";
   }
-
+  bool prv_parseRequest(std::string request);
   // Member variables
   TcpConnection::TcpConnectionPtr m_connection;
 };
