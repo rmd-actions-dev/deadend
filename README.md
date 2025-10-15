@@ -22,3 +22,5 @@ SSL (Eventually)
 HTTP Document Retrieval
 Actually using signals
 Stop applications without coring
+
+Apparently this is also now for marketplace testing
